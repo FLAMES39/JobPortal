@@ -1,0 +1,11 @@
+USE JobPortal 
+GO
+
+--GetJobByID
+CREATE OR ALTER  PROCEDURE GetJobByID (
+    @JobID INT
+)
+AS
+BEGIN
+    SELECT * FROM Jobs WHERE JobID = @JobID;
+END;
