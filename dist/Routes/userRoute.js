@@ -5,4 +5,8 @@ const userCcontroller_1 = require("../Controllers/userCcontroller");
 const userRoute = (0, express_1.Router)();
 userRoute.post('', userCcontroller_1.registerUser);
 userRoute.post('/:login', userCcontroller_1.loginUser);
+userRoute.get('', userCcontroller_1.getAllUsers);
+userRoute.get('/:UserID', userCcontroller_1.getUserByID);
+userRoute.get('/email/:Email', userCcontroller_1.getUserByEmail);
+userRoute.put('/:UserID', userCcontroller_1.updateUser);
 exports.default = userRoute;

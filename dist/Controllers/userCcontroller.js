@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginUser = exports.registerUser = void 0;
+exports.updateUser = exports.getUserByEmail = exports.getUserByID = exports.getAllUsers = exports.loginUser = exports.registerUser = void 0;
 const path_1 = __importDefault(require("path"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -72,3 +72,62 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.loginUser = loginUser;
+const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        let user = yield (yield DatabaseHelper_1.DatabaseHelper.exec('getallUser')).recordset;
+        if (user) {
+            return res.status(201).json(user);
+        }
+        return res.status(404).json({ message: "No Usr=ers Found" });
+    }
+    catch (error) {
+        return res.status(500).json(error.message);
+    }
+});
+exports.getAllUsers = getAllUsers;
+const getUserByID = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { UserID } = req.params;
+        let user = (yield DatabaseHelper_1.DatabaseHelper.exec('GetUserByID', { UserID: UserID })).recordset[0];
+        if (user) {
+            return res.status(201).json(user);
+        }
+        return res.status(404).json({ message: "user not found" });
+    }
+    catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+});
+exports.getUserByID = getUserByID;
+const getUserByEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { Email } = req.params;
+        let user = (yield DatabaseHelper_1.DatabaseHelper.exec('GetUserByEmail', { Email: Email })).recordset[0];
+        if (user) {
+            return res.status(201).json(user);
+        }
+        return res.status(404).json({ message: "user not found" });
+    }
+    catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+});
+exports.getUserByEmail = getUserByEmail;
+const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { Name, Password, Email, ProfilePicture, Resume, Bio } = req.body;
+        let hashedpassword = yield bcrypt_1.default.hash(Password, 10);
+        let { UserID } = req.params;
+        let user = yield (yield DatabaseHelper_1.DatabaseHelper.exec('GetUserByID', { UserID })).recordset[0];
+        // console.log(userid);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        yield DatabaseHelper_1.DatabaseHelper.exec("UpdateUserDetails", { UserID, Name, Password: hashedpassword, Email, ProfilePicture, Resume, Bio });
+        return res.status(201).json({ message: "User Updated" });
+    }
+    catch (error) {
+        return res.status(500).json(error.message);
+    }
+});
+exports.updateUser = updateUser;
