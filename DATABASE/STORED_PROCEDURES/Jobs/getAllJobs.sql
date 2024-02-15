@@ -1,0 +1,8 @@
+USE JobPortal
+GO
+
+CREATE OR ALTER PROCEDURE sp_getAllJobs
+AS
+BEGIN
+SELECT * FROM Jobs
+END

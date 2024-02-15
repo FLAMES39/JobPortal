@@ -29,11 +29,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const cors_1 = __importDefault(require("cors"));
 const express_1 = __importStar(require("express"));
 const userRoute_1 = __importDefault(require("./Routes/userRoute"));
+const jobRoute_1 = __importDefault(require("./Routes/jobRoute"));
+const campanyRoute_1 = __importDefault(require("./Routes/campanyRoute"));
+const CategoryRoute_1 = __importDefault(require("./Routes/CategoryRoute"));
 const SERVER = (0, express_1.default)();
 const PORT = 4000;
 SERVER.use((0, express_1.json)());
 SERVER.use((0, cors_1.default)());
 SERVER.use('/user', userRoute_1.default);
+SERVER.use('/jobs', jobRoute_1.default);
+SERVER.use('/companies', campanyRoute_1.default);
+SERVER.use('/category', CategoryRoute_1.default);
 SERVER.listen(PORT, () => {
     console.log(`Database connected to: http://localhost${PORT}`);
 });

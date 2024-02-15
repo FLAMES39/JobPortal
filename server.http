@@ -1,5 +1,5 @@
 ###
-POST http://localhost:4000/user/
+POST http://localhost:4000/user
 Content-Type: application/json
 
 {
@@ -46,3 +46,73 @@ get http://localhost:4000/user/6
 
 ###
 get http://localhost:4000/user/email/Tali20@gmail.com
+
+
+
+###
+POST http://localhost:4000/jobs
+Content-Type: application/json
+
+{
+  "CompanyID": 1,
+  "CategoryID": 1,
+  "Title": "Frontend Developer",
+  "Description": "A Frontend Developer is a professional specialized in building the visual and interactive elements of a website or web application that users interact with directly. They focus on the client side of development, ensuring that the design and user experience outlined by web designers are translated effectively into a functional user interface.",
+  "Location": "New York",
+  "SalaryRange": "$80,000",
+  "Type": "Full-time",
+  "PostedDate": "2024-02-01",
+  "ExpiryDate": "2024-03-01"
+}
+
+
+###
+POST http://localhost:4000/jobs/add
+Content-Type: application/json
+
+{
+ 
+ 
+  "Name": "Frontend Developer",
+  "Description": "A Frontend Developer is a professional specialized in building the visual and interactive elements of a website or web application that users interact with directly. They focus on the client side of development, ensuring that the design and user experience outlined by web designers are translated effectively into a functional user interface."
+}
+
+
+
+###
+POST http://localhost:4000/companies
+Content-Type: application/json
+
+
+{
+
+  "Name": "Tech Innovations Inc.",
+  "Description": "A leading company in innovative technology solutions, offering a wide range of services and products to enhance business operations and consumer experiences.",
+  "Industry": "Technology",
+  "Logo": "https://example.com/logo.png",
+  "ContactInfo": "info@techinnovations.com"
+}
+
+
+
+###
+get http://localhost:4000/jobs
+
+
+###
+get http://localhost:4000/jobs/Categories/1
+
+
+
+###
+POST http://localhost:4000/companies
+Content-Type: application/json
+
+{
+
+  "Name": "Tech Innovations Inc.",
+  "Description": "A leading company in innovative technology solutions, offering a wide range of services and products to enhance business operations and consumer experiences.",
+  "Industry": "Technology",
+  "Logo": "https://example.com/logo.png",
+  "ContactInfo": "info@techinnovations.com"
+}
