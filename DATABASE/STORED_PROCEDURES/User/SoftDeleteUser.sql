@@ -1,0 +1,11 @@
+USE JobPortal
+GO 
+
+
+
+CREATE OR ALTER PROCEDURE sp_SoftDelete (@UserID INT)
+AS
+BEGIN
+UPDATE Users SET IsDeleted = 1 WHERE @UserID=UserID 
+END 
+SELECT * FROM Users

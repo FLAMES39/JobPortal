@@ -52,3 +52,12 @@ export const companyValidationSchema = joi.object({
     Description: joi.string().required().min(5).max(500)
       .description('The description of the job category, must be between 5 and 500 characters long.')
   });
+
+
+  export const jobApplicationValidationSchema = joi.object({
+    jobID: joi.number().required(),
+    UserID: joi.number().required(),
+    CoverLetter: joi.string().required(),
+    ApplicationDate: joi.date().required(), // Validates a date
+    Status: joi.string().valid('Applied', 'Not Applied').required(),
+  });

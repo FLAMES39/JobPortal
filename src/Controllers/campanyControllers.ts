@@ -44,3 +44,31 @@ export const addCompany = async (req:Request, res:Response)=>{
         return res.status(500).json(error.message)
     }
 }
+
+
+export const getCompanyByID = async (req:Request <{CompanyID:string}> , res:Response) =>{
+    try {
+        const {CompanyID} = req.params as {CompanyID: string}
+        let company : iCompanies= await (await DatabaseHelper.exec('GetCompanyByID',{CompanyID})).recordset[0]
+        if (!company){
+            return res.status(404).json( {message:"Company not found"} )
+        }
+        return res.status(200).json(company)
+    } catch (error:any) {
+        return res.status(500).json({message:error.message})
+    }
+}
+
+
+export const getCompanyByName = async (req:Request <{Name:string}> , res:Response) =>{
+    try {
+        const {Name} = req.params as {Name: string}
+        let company : iCompanies= await (await DatabaseHelper.exec('GetCompanyByName',{Name})).recordset[0]
+        if (!company){
+            return res.status(404).json( {message:"Company not found"} )
+        }
+        return res.status(200).json(company)
+    } catch (error:any) {
+        return res.status(500).json({message:error.message})
+    }
+}

@@ -78,7 +78,7 @@ const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         if (user) {
             return res.status(201).json(user);
         }
-        return res.status(404).json({ message: "No Usr=ers Found" });
+        return res.status(404).json({ message: "No User Found" });
     }
     catch (error) {
         return res.status(500).json(error.message);

@@ -105,6 +105,29 @@ get http://localhost:4000/jobs/Categories/1
 
 
 ###
+get http://localhost:4000/category/Categories/
+
+
+###
+get http://localhost:4000/category/Categories/
+
+
+
+###
+POST http://localhost:4000/categories
+Content-Type: application/json
+
+{
+
+  "Name": "Tech Innovations Inc.",
+  "Description": "A leading company in innovative technology solutions, offering a wide range of services and products to enhance business operations and consumer experiences.",
+
+}
+
+
+
+
+###
 POST http://localhost:4000/companies
 Content-Type: application/json
 

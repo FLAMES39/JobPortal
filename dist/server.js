@@ -32,6 +32,8 @@ const userRoute_1 = __importDefault(require("./Routes/userRoute"));
 const jobRoute_1 = __importDefault(require("./Routes/jobRoute"));
 const campanyRoute_1 = __importDefault(require("./Routes/campanyRoute"));
 const CategoryRoute_1 = __importDefault(require("./Routes/CategoryRoute"));
+const adminRoute_1 = __importDefault(require("./Routes/adminRoute"));
+const ApplicationRoute_1 = __importDefault(require("./Routes/ApplicationRoute"));
 const SERVER = (0, express_1.default)();
 const PORT = 4000;
 SERVER.use((0, express_1.json)());
@@ -40,6 +42,8 @@ SERVER.use('/user', userRoute_1.default);
 SERVER.use('/jobs', jobRoute_1.default);
 SERVER.use('/companies', campanyRoute_1.default);
 SERVER.use('/category', CategoryRoute_1.default);
+SERVER.use('/admin', adminRoute_1.default);
+SERVER.use('/apply', ApplicationRoute_1.default);
 SERVER.listen(PORT, () => {
     console.log(`Database connected to: http://localhost${PORT}`);
 });

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.jobCategoryValidationSchema = exports.companyValidationSchema = exports.jobValidationSchema = exports.userDetailValidationSchema = void 0;
+exports.jobApplicationValidationSchema = exports.jobCategoryValidationSchema = exports.companyValidationSchema = exports.jobValidationSchema = exports.userDetailValidationSchema = void 0;
 const joi_1 = __importDefault(require("joi"));
 exports.userDetailValidationSchema = joi_1.default.object({
     Name: joi_1.default.string().required(),
@@ -35,4 +35,11 @@ exports.jobCategoryValidationSchema = joi_1.default.object({
         .description('The name of the job category, must be between 2 and 100 characters long.'),
     Description: joi_1.default.string().required().min(5).max(500)
         .description('The description of the job category, must be between 5 and 500 characters long.')
+});
+exports.jobApplicationValidationSchema = joi_1.default.object({
+    jobID: joi_1.default.number().required(),
+    UserID: joi_1.default.number().required(),
+    CoverLetter: joi_1.default.string().required(),
+    ApplicationDate: joi_1.default.date().required(), // Validates a date
+    Status: joi_1.default.string().valid('Applied', 'Not Applied').required(),
 });

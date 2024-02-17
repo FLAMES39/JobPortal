@@ -15,15 +15,17 @@ interface jobCategory{
 }
 
 
-interface ExtendedRequest extends Request{
-    body:{
-        Name:string
-        Description:string
-    },
-    params:{
-        Name:string
-    }
-}
+// interface ExtendedRequest extends Request{
+//     body:{
+//         Name:string
+//         Description:string
+//     },
+//     params:{
+//         Name:string
+//     }
+// }
+
+
 
 interface ijobs{
     CompanyID:number
@@ -40,11 +42,28 @@ interface ijobs{
 
 
 
-export const getJobCategory= async (req:Request <{Name:string}> , res:Response) =>{
+export const getJobCategoryName= async (req:Request <{Name:string}> , res:Response) =>{
     try {
         const {Name} = req.params as {Name: string}
         let jobCategory: ijobs= await (await DatabaseHelper.exec('GetJobCategory',{Name})).recordset[0]
         console.log(Name);
+        
+        if (!jobCategory){
+            return res.status(404).json( {message:"JobCategory not found"} )
+        }
+        return res.status(200).json(jobCategory)
+    } catch (error:any) {
+        return res.status(500).json({message:error.message})
+    }
+}
+
+
+
+export const getJobCategoryLocation= async (req:Request <{Location:string}> , res:Response) =>{
+    try {
+        const {Location} = req.params as {Location: string}
+        let jobCategory: ijobs= await (await DatabaseHelper.exec('GetJobCategory',{Location})).recordset[0]
+        console.log(Location);
         
         if (!jobCategory){
             return res.status(404).json( {message:"JobCategory not found"} )

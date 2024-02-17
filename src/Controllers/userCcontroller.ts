@@ -86,7 +86,7 @@ export const getAllUsers = async (req:ExtendedRequest,res:Response)=>{
        if(user){
             return res.status(201).json(user)
        }
-       return res.status(404).json({message:"No Usr=ers Found"})
+       return res.status(404).json({message:"No User Found"})
     } catch (error:any) {
         return res.status(500).json(error.message)
     }
