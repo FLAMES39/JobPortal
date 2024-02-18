@@ -10,3 +10,8 @@ AS
 BEGIN
     SELECT * FROM Companies WHERE Name = @Name
 END;
+
+USE CRUDUI
+GO
+
+SELECT * FROM Users

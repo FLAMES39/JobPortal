@@ -15,15 +15,15 @@ interface jobCategory{
 }
 
 
-// interface ExtendedRequest extends Request{
-//     body:{
-//         Name:string
-//         Description:string
-//     },
-//     params:{
-//         Name:string
-//     }
-// }
+interface ExtendedRequest extends Request{
+    body:{
+        Name:string
+        Description:string
+    },
+    params:{
+        Name:string
+    }
+}
 
 
 
@@ -86,7 +86,8 @@ export const addJobCategories = async (req:Request, res:Response)=>{
         if(error){
            return res.status(404).json(error.details[0].message)
         }
-        await DatabaseHelper.exec('CreateJobPosting')
+        await DatabaseHelper.exec('CreateJobPosting',{Name,Description})
+        return res.status(200).json({message:"Added Successful"})
     } catch (error:any) {
         return res.status(500).json(error.message)
     }

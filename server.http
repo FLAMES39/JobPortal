@@ -139,3 +139,71 @@ Content-Type: application/json
   "Logo": "https://example.com/logo.png",
   "ContactInfo": "info@techinnovations.com"
 }
+
+
+
+
+###
+get http://localhost:4000/admin
+
+
+
+###
+get http://localhost:4000/admin/companies
+
+
+
+###
+DELETE http://localhost:4000/admin/delete/1
+
+
+###
+DELETE http://localhost:4000/admin/1
+
+###
+DELETE http://localhost:4000/admin/company/1
+
+
+###
+POST http://localhost:4000/apply
+Content-Type: application/json
+
+{
+
+  "JobID": 1,
+  "UserID": 2,
+  "CoverLetter": "A leading company in innovative technology solutions, offering a wide range of services and products to enhance business operations and consumer experiences.",
+
+}
+
+
+
+###
+get http://localhost:4000/apply
+
+
+###
+DELETE http://localhost:4000/apply/
+
+
+###
+get http://localhost:4000/category/
+
+
+
+###
+get http://localhost:4000/category/Categories/
+
+
+###
+POST http://localhost:4000/categoti
+Content-Type: application/json
+
+{
+
+  "Name": "FrontEnd",
+  "UserID": 2,
+  "Description": "A leading company in innovative technology solutions, offering a wide range of services and products to enhance business operations and consumer experiences.",
+
+}
+

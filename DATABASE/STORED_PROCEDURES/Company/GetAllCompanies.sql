@@ -1,0 +1,11 @@
+
+
+USE JobPortal
+GO
+
+CREATE OR ALTER PROCEDURE getallCompanies
+AS 
+BEGIN
+
+SELECT * FROM Companies 
+END

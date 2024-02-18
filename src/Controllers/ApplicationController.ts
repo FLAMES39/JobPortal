@@ -55,7 +55,7 @@ export const applyJob = async (req:ExtendedRequest, res: Response)=>{
 
 export const getAllApplications = async  (req:Request , res:Response)=>{
     try {
-        let application:iApplication[]= (await DatabaseHelper.exec('')).recordset
+        let application:iApplication[]= (await DatabaseHelper.exec('sp_getAllApplications')).recordset
         res.status(200).json(application)
     } catch (error:any) {
         return res.status(500).json(error.message)

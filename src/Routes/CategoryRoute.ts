@@ -5,9 +5,9 @@ import { addJobCategories, getJobCategoryLocation, getJobCategoryName } from '..
 
 const CategoryRoute = Router()
 
-CategoryRoute.get('/Category/:Location',getJobCategoryLocation)
+CategoryRoute.get('/:Location',getJobCategoryLocation)
 CategoryRoute.post('',addJobCategories)
-CategoryRoute.get('/Categories/Category/:Name',getJobCategoryName)
+CategoryRoute.get('/Categories/:Name',getJobCategoryName)
 
 
 

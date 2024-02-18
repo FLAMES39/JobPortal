@@ -70,7 +70,7 @@ export const getAllUsers = async (req:ExtendedRequest,res:Response)=>{
        if(user){
             return res.status(201).json(user)
        }
-       return res.status(404).json({message:"No Usr=ers Found"})
+       return res.status(404).json({message:"No Users Found"})
     } catch (error:any) {
         return res.status(500).json(error.message)
     }
@@ -83,7 +83,8 @@ export const DeleteUser = async (req:Request<{UserID:string}> , res:Response)=>{
     try {
         const {UserID} = req.params as {UserID:string}
         let user:Users =await (await DatabaseHelper.exec('GetUserByID',{UserID})).recordset[0]
-
+        console.log(user);
+        
         if(user){
             res.status(200).json(user)
         }
@@ -98,7 +99,7 @@ export const DeleteUser = async (req:Request<{UserID:string}> , res:Response)=>{
 
 export const getAllCompanies = async (req:ExtendedRequest,res:Response)=>{
     try {
-       let companies:iCompanies[] = await(await DatabaseHelper.exec('getallUser')).recordset
+       let companies:iCompanies[] = await(await DatabaseHelper.exec('getallCompanies')).recordset
        if(companies){
             return res.status(201).json(companies)
        }

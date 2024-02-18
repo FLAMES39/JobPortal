@@ -10,9 +10,9 @@ const adminRoute = Router()
 
 adminRoute.get('',getAllUsers)
 adminRoute.get('/companies',getAllCompanies)
-adminRoute.delete('',DeleteUser)
-adminRoute.delete('/softdelete',SoftDeleteUser)
-adminRoute.delete('/deleted/company',DeleteCompany)
+adminRoute.delete('/delete/:UserID',DeleteUser)
+adminRoute.delete('/:UserID',SoftDeleteUser)
+adminRoute.delete('/deleted/company/:CompanyID',DeleteCompany)
 
 
 
