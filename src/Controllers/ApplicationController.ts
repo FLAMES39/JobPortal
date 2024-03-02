@@ -31,7 +31,7 @@ export const applyJob = async (req:ExtendedRequest, res: Response)=>{
        
         const ApplicationDate = new Date().toISOString().slice(0, 10); // Converts to 'YYYY-MM-DD'
 
-        let Status = 'Not Applied'
+        let Status = 'Applied'
 
        const {JobID,UserID,CoverLetter} = req.body
     
