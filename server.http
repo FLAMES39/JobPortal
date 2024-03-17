@@ -16,8 +16,8 @@ Content-Type: application/json
 
 {
    
-    "Email":"Tchali20@gmail.com", 
-    "Password":"1234qwerQWER"
+    "Email":"qeshy@gmail.com", 
+    "Password":"qwerQWER1234"
 }
 
 ###
@@ -48,21 +48,21 @@ get http://localhost:4000/user/6
 get http://localhost:4000/user/email/Tali20@gmail.com
 
 
-
 ###
 POST http://localhost:4000/jobs
 Content-Type: application/json
 
+
 {
-  "CompanyID": 1,
+  "CompanyID": 4,
   "CategoryID": 1,
-  "Title": "Frontend Developer",
+  "Title": "NodeJS Developer",
   "Description": "A Frontend Developer is a professional specialized in building the visual and interactive elements of a website or web application that users interact with directly. They focus on the client side of development, ensuring that the design and user experience outlined by web designers are translated effectively into a functional user interface.",
-  "Location": "New York",
-  "SalaryRange": "$80,000",
-  "Type": "Full-time",
+  "Location": "Califonia",
+  "SalaryRange": "$90,000",
+  "Type": "Part-time",
   "PostedDate": "2024-02-01",
-  "ExpiryDate": "2024-03-01"
+  "ExpiryDate": "2024-05-01"
 }
 
 
@@ -165,14 +165,13 @@ DELETE http://localhost:4000/admin/company/1
 
 
 ###
-POST http://localhost:4000/apply
+POST http://localhost:4000/apply/4
 Content-Type: application/json
+
 
 {
 
-  "JobID": 1,
-  "UserID": 2,
-  "CoverLetter": "A leading company in innovative technology solutions, offering a wide range of services and products to enhance business operations and consumer experiences.",
+  "CoverLetter": "A leading company in innovative technology solutions, offering a wide range of services and products to enhance business operations and consumer experiences."
 
 }
 
@@ -196,7 +195,7 @@ get http://localhost:4000/category/Categories/
 
 
 ###
-POST http://localhost:4000/categoti
+POST http://localhost:4000/category
 Content-Type: application/json
 
 {

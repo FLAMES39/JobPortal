@@ -64,8 +64,8 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             const { EmailSent, ProfileProfile, Resume, Bio } = person, rest = __rest(person, ["EmailSent", "ProfileProfile", "Resume", "Bio"]);
             return rest;
         });
-        const token = jsonwebtoken_1.default.sign(payload[0], process.env.SECRET_KEY, { expiresIn: "30000s" });
-        return res.status(201).json({ message: "Logged In Successfull", token, Name: payload[0].Name });
+        const token = jsonwebtoken_1.default.sign(payload[0], process.env.SECRET_KEY, { expiresIn: "36000s" });
+        return res.status(201).json({ message: "Logged In Successfull", token, Name: payload[0].Name, role: payload[0].role });
     }
     catch (error) {
         return res.status(500).json(error.message);

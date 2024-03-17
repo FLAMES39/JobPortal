@@ -7,5 +7,7 @@ CREATE TABLE Companies (
     Description TEXT,
     Industry VARCHAR(255),
     Logo VARCHAR(255),
-    ContactInfo VARCHAR(255)
+    ContactInfo VARCHAR(255),
+    role VARCHAR(100) DEFAULT 'Company'
+
 );

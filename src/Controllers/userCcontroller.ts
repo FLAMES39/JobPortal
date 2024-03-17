@@ -73,12 +73,13 @@ export const loginUser = async(req:Request, res:Response)=>{
             return rest
         })
         
-        const token = jwt.sign(payload[0],process.env.SECRET_KEY as string ,{expiresIn:"30000s"})
-        return res.status(201).json({message:"Logged In Successfull",token, Name:payload[0].Name})
+        const token = jwt.sign(payload[0],process.env.SECRET_KEY as string ,{expiresIn:"36000s"})
+        return res.status(201).json({message:"Logged In Successfull",token, Name:payload[0].Name, role:payload[0].role})
     } catch (error:any) {
         return res.status(500).json(error.message)
     }
 }
+
 
 export const getAllUsers = async (req:ExtendedRequest,res:Response)=>{
     try {

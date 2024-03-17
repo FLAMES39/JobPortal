@@ -13,9 +13,6 @@ export const userDetailValidationSchema= joi.object({
 
 
 export const jobValidationSchema = joi.object({
-    CompanyID: joi.number().integer().positive().required().description('Unique identifier for the company posting the job'),
-
-    CategoryID: joi.number().integer().positive().required().description('Unique identifier for the job category'),
 
     Title: joi.string().trim().min(3).max(255).required().description('The title of the job posting'),
 
@@ -55,9 +52,5 @@ export const companyValidationSchema = joi.object({
 
 
   export const jobApplicationValidationSchema = joi.object({
-    jobID: joi.number().required(),
-    UserID: joi.number().required(),
     CoverLetter: joi.string().required(),
-    ApplicationDate: joi.date().required(), // Validates a date
-    Status: joi.string().valid('Applied', 'Not Applied').required(),
   });

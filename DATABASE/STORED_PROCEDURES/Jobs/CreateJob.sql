@@ -3,8 +3,6 @@ GO
 
 --CreateJobPosting
 CREATE OR ALTER PROCEDURE CreateJobPosting (
-    @CompanyID INT,
-    @CategoryID INT,
     @Title VARCHAR(255),
     @Description TEXT,
     @Location VARCHAR(255),
@@ -15,6 +13,6 @@ CREATE OR ALTER PROCEDURE CreateJobPosting (
 )
 AS
 BEGIN
-    INSERT INTO Jobs (CompanyID, CategoryID, Title, Description, Location, SalaryRange, Type, PostedDate, ExpiryDate)
-    VALUES (@CompanyID, @CategoryID, @Title, @Description, @Location, @SalaryRange, @Type, @PostedDate, @ExpiryDate);
+    INSERT INTO Jobs ( Title, Description, Location, SalaryRange, Type, PostedDate, ExpiryDate)
+    VALUES (@Title, @Description, @Location, @SalaryRange, @Type, @PostedDate, @ExpiryDate);
 END;

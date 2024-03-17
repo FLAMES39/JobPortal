@@ -9,7 +9,7 @@ import { applyJob, getAllApplications, withdrawApplication } from "../Controller
 const applicationRoute = Router();
 
 
-applicationRoute.post('',applyJob)
+applicationRoute.post('/:JobID',applyJob)
 applicationRoute.get('',getAllApplications)
 applicationRoute.delete('',withdrawApplication)
 

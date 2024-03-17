@@ -5,6 +5,7 @@ CREATE TABLE Users (
     UserID INT IDENTITY(1,1) PRIMARY KEY,
     Name VARCHAR(255),
     Email VARCHAR(255) UNIQUE NOT NULL,
+    role VARCHAR(100) DEFAULT 'User',
     Password VARCHAR(255) NOT NULL,
     ProfilePicture VARCHAR(255),
     Resume TEXT,

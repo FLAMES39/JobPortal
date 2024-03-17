@@ -11,8 +11,6 @@ exports.userDetailValidationSchema = joi_1.default.object({
     Password: joi_1.default.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required()
 });
 exports.jobValidationSchema = joi_1.default.object({
-    CompanyID: joi_1.default.number().integer().positive().required().description('Unique identifier for the company posting the job'),
-    CategoryID: joi_1.default.number().integer().positive().required().description('Unique identifier for the job category'),
     Title: joi_1.default.string().trim().min(3).max(255).required().description('The title of the job posting'),
     Description: joi_1.default.string().trim().min(10).required().description('Detailed description of the job posting'),
     Location: joi_1.default.string().trim().min(2).max(255).required().description('Location where the job is based'),
@@ -37,9 +35,5 @@ exports.jobCategoryValidationSchema = joi_1.default.object({
         .description('The description of the job category, must be between 5 and 500 characters long.')
 });
 exports.jobApplicationValidationSchema = joi_1.default.object({
-    jobID: joi_1.default.number().required(),
-    UserID: joi_1.default.number().required(),
     CoverLetter: joi_1.default.string().required(),
-    ApplicationDate: joi_1.default.date().required(), // Validates a date
-    Status: joi_1.default.string().valid('Applied', 'Not Applied').required(),
 });

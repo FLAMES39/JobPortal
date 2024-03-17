@@ -8,9 +8,9 @@ const jobRoute = Router()
 
 jobRoute.post('',postJob)
 jobRoute.get('',getAllJobs)
-jobRoute.put('/:JobID',updateJob)
-jobRoute.delete('/:JobID',deleteJob)
-jobRoute.get('/:JobID',getJobByID)
+jobRoute.put('/:jobID',updateJob)
+jobRoute.delete('/:jobID',deleteJob)
+jobRoute.get('/:jobID',getJobByID)
 jobRoute.get('/Categories/:CategoryID',getJobCategory)
 jobRoute.post('/:add',addJobCategories)
 

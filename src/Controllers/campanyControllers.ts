@@ -29,7 +29,7 @@ interface ExtendedRequest extends Request{
     }
 }
 
-export const addCompany = async (req:Request, res:Response)=>{
+export const addCompany = async (req:ExtendedRequest, res:Response)=>{
     try {
         let CompanyID = uid()
         const {Name,Description,Industry,Logo,ContactInfo} = req.body

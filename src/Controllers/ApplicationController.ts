@@ -14,6 +14,18 @@ interface iApplication{
     Status:"Applied" | "Not Applied"
     CoverLetter:string
 }
+export interface jobs{
+    JobID:number
+    CompanyID:number
+    CategoryID:number
+    Title:string
+    Description:string
+    Location:string
+    SalaryRange:string
+    Type:string
+    PostedDate:string
+    ExpiryDate:string
+}
 interface ExtendedRequest extends Request{
     body:{
         JobID:number
@@ -25,7 +37,7 @@ interface ExtendedRequest extends Request{
     }
 }
 
-export const applyJob = async (req:ExtendedRequest, res: Response)=>{
+export const applyJob = async (req:Request<{JobID:string}>, res: Response)=>{
 
     try {
        
@@ -33,11 +45,16 @@ export const applyJob = async (req:ExtendedRequest, res: Response)=>{
 
         let Status = 'Applied'
 
-       const {JobID,UserID,CoverLetter} = req.body
-    
-       if(!JobID || !UserID || !CoverLetter){
-               return res.status(400).json({message:"Missing required fields"})
+       const {JobID} = req.params as {JobID:string}
+       const {CoverLetter} = req.body 
+       let job: jobs= await (await DatabaseHelper.exec('GetJobByID',{JobID})).recordset[0]
+       if (!job){
+           return res.status(404).json( {message:"Job not found"} )
        }
+    
+    //    if(!JobID || !UserID || !CoverLetter){
+    //            return res.status(400).json({message:"Missing required fields"})
+    //    }
 
      const {error}= jobApplicationValidationSchema.validate(req.body)
 
@@ -45,7 +62,7 @@ export const applyJob = async (req:ExtendedRequest, res: Response)=>{
         return res.status(404).json(error.details[0].message)
      }
 
-        await DatabaseHelper.exec('ApplyForJob',{JobID,UserID,ApplicationDate,Status,CoverLetter})
+        await DatabaseHelper.exec('ApplyForJob',{JobID,ApplicationDate,Status,CoverLetter})
         return res.status(201).json({ message: "Successfully Applied" ,})
     } catch (error:any) {
         return res.status(500).json(error.message)

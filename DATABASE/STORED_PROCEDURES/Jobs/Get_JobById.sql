@@ -1,11 +1,11 @@
-USE JobPortal 
+USE jobPortal 
 GO
 
 --GetJobByID
 CREATE OR ALTER  PROCEDURE GetJobByID (
-    @JobID INT
+    @jobID INT
 )
 AS
 BEGIN
-    SELECT * FROM Jobs WHERE JobID = @JobID;
+    SELECT * FROM jobs WHERE jobID = @jobID;
 END;

@@ -31,7 +31,7 @@ interface jobCategory{
 
 interface ExtendedRequest extends Request{
     body:{
-        JobID:number
+        jobID:number
         CompanyID:number
         CategoryID:number
         Title:string
@@ -50,26 +50,26 @@ interface ExtendedRequest extends Request{
 
 
 
-export const postJob = async (req:Request, res:Response)=>{
+export const postJob = async (req:ExtendedRequest, res:Response)=>{
     try {
-        const {CompanyID,CategoryID,Title,Description,Location,SalaryRange,Type,PostedDate,ExpiryDate}=req.body
+        const {Title,Description,Location,SalaryRange,Type,PostedDate,ExpiryDate}=req.body
         const {error}= jobValidationSchema.validate(req.body)
         if(error){
            return res.status(404).json(error.details[0].message)
         }
-        await DatabaseHelper.exec('CreateJobPosting',{CompanyID,CategoryID,Title,Description,Location,SalaryRange,Type,PostedDate,ExpiryDate})
+        await DatabaseHelper.exec('CreateJobPosting',{Title,Description,Location,SalaryRange,Type,PostedDate,ExpiryDate})
+        return res.status(201).json({message:"JobPosted Successful"})
+
     } catch (error:any) {
         return res.status(500).json(error.message)
     }
 }
 
 
-export const getAllJobs= async (req:Request, res: Response)=>{
+export const getAllJobs= async (req:ExtendedRequest, res: Response)=>{
     try {
-        let jobs: ijobs[]= await (await DatabaseHelper.exec('sp_getAllJobs')).recordset[0]
-        if(jobs){
-            res.status(200).json(jobs)
-        }
+        let jobs: ijobs[]= await (await DatabaseHelper.exec('sp_getAllJobs')).recordset
+      return   res.status(201).json(jobs)
     } catch (error:any) {
         return res.status(500).json(error.message)
     }
@@ -110,10 +110,10 @@ export const deleteJob = async (req:Request <{JobID:string}>,res:Response)=>{
 }
 
 
-export const getJobByID = async (req:Request <{JobID:string}> , res:Response) =>{
+export const getJobByID = async (req:Request <{jobID:string}> , res:Response) =>{
     try {
-        const {JobID} = req.params as {JobID: string}
-        let job: ijobs= await (await DatabaseHelper.exec('GetJobByID',{JobID})).recordset[0]
+        const {jobID} = req.params as {jobID: string}
+        let job: ijobs= await (await DatabaseHelper.exec('GetJobByID',{jobID})).recordset[0]
         if (!job){
             return res.status(404).json( {message:"Job not found"} )
         }
