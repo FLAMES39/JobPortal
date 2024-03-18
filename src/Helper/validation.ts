@@ -39,7 +39,11 @@ export const companyValidationSchema = joi.object({
     Description: joi.string().required().min(5).max(500), 
     Industry: joi.string().required().min(2).max(50),
     Logo: joi.string().uri().optional(),
-    ContactInfo: joi.string().required().min(2).max(500)
+    ContactInfo: joi.string().required().min(2).max(500),
+    Email: joi.string().required(),
+    Password: joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required()
+
+
   })
 
 

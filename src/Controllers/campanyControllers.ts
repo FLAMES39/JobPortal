@@ -5,6 +5,8 @@ import { Request, Response } from 'express'
 import { companyValidationSchema } from '../Helper/validation'
 import { DatabaseHelper } from '../DatabaseHelper'
 import {v4 as uid} from 'uuid'
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 
 dotenv.config({path:path.resolve(__dirname,'../../env')})
@@ -16,6 +18,8 @@ interface iCompanies{
     Industry:string
     Logo:string
     ContactInfo:string
+    Email:string
+    Password:string
 }
 
 interface ExtendedRequest extends Request{
@@ -26,23 +30,49 @@ interface ExtendedRequest extends Request{
         Industry:string
         Logo:string
         ContactInfo:string
+        Email:string
+        Password:string
     }
 }
 
 export const addCompany = async (req:ExtendedRequest, res:Response)=>{
     try {
         let CompanyID = uid()
-        const {Name,Description,Industry,Logo,ContactInfo} = req.body
+        const {Name,Description,Industry,Logo,ContactInfo,Email,Password} = req.body
         
         const {error }= companyValidationSchema.validate(req.body)
         if(error){
             return res.status(404).json(error.details[0].message)
         }
-        await DatabaseHelper.exec('AddNewCompany',{Name,Description,Industry,Logo,ContactInfo})
+        let hashedPassword = await bcrypt.hash(Password,7)
+        await DatabaseHelper.exec('AddNewCompany',{Name,Description,Industry,Logo,ContactInfo,Email,Password:hashedPassword})
         return res.status(201).json({message:"Compony Added Successfully!!"})
     } catch (error:any) {
         return res.status(500).json(error.message)
     }
+}
+
+export const loginCompany  = async (req:Request, res:Response)=>{
+    try {
+        const {Email, Password} = req.body
+        let company = await(await DatabaseHelper.query(`SELECT * FROM companies WHERE Email='${Email}'`)).recordset
+        if(!company){
+            return res.status(404).json({message:"company not Found"})
+        }
+        let  correctPassword = await bcrypt.compare(Password,company[0].Password)
+        if(!correctPassword){
+            return res.status(404).json({message:"company not Found"})
+        }
+        const payload = company.map(comp=>{
+            const {Password,Email,...rest}=comp
+            return rest
+        })
+        const  token = jwt.sign(payload[0],process.env.SECRET_KEY as string,{expiresIn:"36000"})
+        return res.status(201).json({message:"Logged Company Successful",token:payload[0].token,role:payload[0].Name,Name:payload[0].Name})
+    } catch (error:any) {
+        return res.status(500).json(error.message)
+    }
+
 }
 
 
