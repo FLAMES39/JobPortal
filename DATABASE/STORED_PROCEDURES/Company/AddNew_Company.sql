@@ -8,10 +8,12 @@ CREATE OR ALTER  PROCEDURE AddNewCompany (
     @Description TEXT,
     @Industry VARCHAR(255),
     @Logo VARCHAR(255),
-    @ContactInfo VARCHAR(255)
+    @ContactInfo VARCHAR(255),
+	@Email VARCHAR (255),
+	@Password VARCHAR (100)
 )
 AS
 BEGIN
-    INSERT INTO Companies (Name, Description, Industry, Logo, ContactInfo)
-    VALUES (@Name, @Description, @Industry, @Logo, @ContactInfo);
+    INSERT INTO Companies (Name, Description, Industry, Logo, ContactInfo,Email,Password)
+    VALUES (@Name, @Description, @Industry, @Logo, @ContactInfo,@Email,@Password);
 END;

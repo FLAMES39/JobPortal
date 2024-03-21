@@ -8,6 +8,8 @@ CREATE TABLE Companies (
     Industry VARCHAR(255),
     Logo VARCHAR(255),
     ContactInfo VARCHAR(255),
-    role VARCHAR(100) DEFAULT 'Company'
+    role VARCHAR(100) DEFAULT 'Company',
+	Email  VARCHAR (100) UNIQUE,
+	Password  VARCHAR (100) 
 
 );

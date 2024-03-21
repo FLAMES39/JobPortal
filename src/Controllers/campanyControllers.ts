@@ -68,7 +68,7 @@ export const loginCompany  = async (req:Request, res:Response)=>{
             return rest
         })
         const  token = jwt.sign(payload[0],process.env.SECRET_KEY as string,{expiresIn:"36000"})
-        return res.status(201).json({message:"Logged Company Successful",token:payload[0].token,role:payload[0].Name,Name:payload[0].Name})
+        return res.status(201).json({message:"Logged Company Successful",token,role:payload[0].role,Name:payload[0].Name})
     } catch (error:any) {
         return res.status(500).json(error.message)
     }
@@ -98,6 +98,15 @@ export const getCompanyByName = async (req:Request <{Name:string}> , res:Respons
             return res.status(404).json( {message:"Company not found"} )
         }
         return res.status(200).json(company)
+    } catch (error:any) {
+        return res.status(500).json({message:error.message})
+    }
+}
+
+export const getAllCompanies = async (req:ExtendedRequest,res:Response)=>{
+    try {
+        let company:iCompanies[] = await (await DatabaseHelper.exec('getallCompanies')).recordset
+        return res.status(201).json(company)
     } catch (error:any) {
         return res.status(500).json({message:error.message})
     }

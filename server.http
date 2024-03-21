@@ -137,9 +137,23 @@ Content-Type: application/json
   "Description": "A leading company in innovative technology solutions, offering a wide range of services and products to enhance business operations and consumer experiences.",
   "Industry": "Technology",
   "Logo": "https://example.com/logo.png",
-  "ContactInfo": "info@techinnovations.com"
+  "ContactInfo": "01010172721",
+  "Email":"qeshy@gmail.com", 
+  "Password":"qwerQWER1234"
 }
 
+
+
+
+###
+POST http://localhost:4000/companies/login
+Content-Type: application/json
+
+{
+   
+    "Email":"qeshy@gmail.com", 
+    "Password":"qwerQWER1234"
+}
 
 
 
