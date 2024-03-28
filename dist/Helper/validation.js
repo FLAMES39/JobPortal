@@ -36,6 +36,27 @@ exports.jobCategoryValidationSchema = joi_1.default.object({
     Description: joi_1.default.string().required().min(5).max(500)
         .description('The description of the job category, must be between 5 and 500 characters long.')
 });
+const jsonArrayValidator = (value, helpers) => {
+    try {
+        const arr = JSON.parse(value);
+        if (!Array.isArray(arr)) {
+            throw new Error('Not an array');
+        }
+        // Additional validation logic for array elements could go here
+    }
+    catch (error) {
+        // Use helpers.error to generate a Joi error
+        return helpers.error('any.invalid');
+    }
+    return value; // Return the value if it's valid
+};
 exports.jobApplicationValidationSchema = joi_1.default.object({
+    Name: joi_1.default.string().required(),
+    Email: joi_1.default.string().required(),
+    contactInfo: joi_1.default.string().required(),
+    JobID: joi_1.default.number().required(),
     CoverLetter: joi_1.default.string().required(),
+    employmentHistory: joi_1.default.string().custom(jsonArrayValidator, 'jSON Array Validation').required(),
+    educationHistory: joi_1.default.string().custom(jsonArrayValidator, 'jSON Array Validation').required(),
+    skills: joi_1.default.string().custom(jsonArrayValidator, 'jSON Array Validation').required()
 });

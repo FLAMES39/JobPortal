@@ -56,7 +56,7 @@ export const loginCompany  = async (req:Request, res:Response)=>{
     try {
         const {Email, Password} = req.body
         let company = await(await DatabaseHelper.query(`SELECT * FROM companies WHERE Email='${Email}'`)).recordset
-        if(!company){
+        if(!company[0]){
             return res.status(404).json({message:"company not Found"})
         }
         let  correctPassword = await bcrypt.compare(Password,company[0].Password)

@@ -2,15 +2,20 @@ USE JobPortal
 GO
 
 
---ApplyForJob
-CREATE OR ALTER PROCEDURE ApplyForJob (
+CREATE OR ALTER PROCEDURE insertApplication
     @JobID INT,
-    @UserID INT,
+    @CoverLetter VARCHAR(MAX),
+    @ResumePath VARCHAR(MAX),
+    @Name VARCHAR(255),
+    @Email VARCHAR(255),
+    @ContactInfo VARCHAR(255),
     @ApplicationDate DATE,
-    @CoverLetter TEXT
-)
+    @Status VARCHAR(100)
 AS
 BEGIN
-    INSERT INTO Applications (JobID, UserID, ApplicationDate, Status, CoverLetter)
-    VALUES (@JobID, @UserID, @ApplicationDate, 'applied', @CoverLetter);
-END;
+    INSERT INTO Applications (JobID,  ResumePath, Name, Email, ContactInfo, ApplicationDate, Status,CoverLetter)
+    VALUES (@JobID, @CoverLetter, @ResumePath, @Name, @Email, @ContactInfo, @ApplicationDate, @Status)
+    
+    -- Return the ID of the newly inserted application
+    SELECT SCOPE_IDENTITY() AS ApplicationID;
+END

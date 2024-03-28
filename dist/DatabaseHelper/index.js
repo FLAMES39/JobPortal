@@ -18,8 +18,12 @@ const mssql_1 = __importDefault(require("mssql"));
 class DatabaseHelper {
     static addInputToRequest(request, data = {}) {
         const keys = Object.keys(data);
-        keys.map(KeyName => {
-            return request.input(KeyName, data[KeyName]);
+        keys.forEach(KeyName => {
+            const value = data[KeyName];
+            // Check if the value is null before adding it to the request
+            if (value !== null) {
+                request.input(KeyName, value);
+            }
         });
         return request;
     }
@@ -33,6 +37,45 @@ class DatabaseHelper {
     static query(queryString) {
         return __awaiter(this, void 0, void 0, function* () {
             return (yield DatabaseHelper.pool).request().query(queryString);
+        });
+    }
+    static insertApplication(applicationData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // Exclude properties with null values
+            const data = Object.entries(applicationData).reduce((acc, [key, value]) => {
+                if (value !== null) {
+                    acc[key] = value;
+                }
+                return acc;
+            }, {});
+            // Now 'data' doesn't contain null values and matches the expected type
+            const result = yield DatabaseHelper.exec('insertApplication', data);
+            // Assuming the stored procedure returns the ID of the inserted application
+            return result.recordset[0].ApplicationID;
+        });
+    }
+    static insertEmploymentHistory(employmentData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const pool = yield this.pool;
+            const request = pool.request();
+            // Add input parameters to the request based on employmentData
+            // Execute the query or stored procedure to insert employment history
+        });
+    }
+    static insertEducationHistory(educationData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const pool = yield this.pool;
+            const request = pool.request();
+            // Add input parameters to the request based on educationData
+            // Execute the query or stored procedure to insert education history
+        });
+    }
+    static insertSkill(skillData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const pool = yield this.pool;
+            const request = pool.request();
+            // Add input parameters to the request based on skillData
+            // Execute the query or stored procedure to insert skill
         });
     }
 }

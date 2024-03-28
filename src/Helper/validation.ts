@@ -55,6 +55,34 @@ export const companyValidationSchema = joi.object({
   });
 
 
+
+
+  import Joi from 'joi'; // Make sure you import Joi
+
+  const jsonArrayValidator = (value: string, helpers: Joi.CustomHelpers): string | Joi.ErrorReport => {
+      try {
+          const arr = JSON.parse(value);
+          if (!Array.isArray(arr)) {
+              throw new Error('Not an array');
+          }
+          // Additional validation logic for array elements could go here
+      } catch (error) {
+          // Use helpers.error to generate a Joi error
+          return helpers.error('any.invalid');
+      }
+      return value; // Return the value if it's valid
+  };
+  
+
+
   export const jobApplicationValidationSchema = joi.object({
+    Name: joi.string().required(),
+    Email: joi.string().required(),
+    contactInfo: joi.string().required(),
+    JobID: joi.number().required(),
     CoverLetter: joi.string().required(),
+    employmentHistory: joi.string().custom(jsonArrayValidator, 'jSON Array Validation').required(),
+    educationHistory: joi.string().custom(jsonArrayValidator, 'jSON Array Validation').required(),
+    skills: joi.string().custom(jsonArrayValidator, 'jSON Array Validation').required()
+
   });
