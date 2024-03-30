@@ -9,6 +9,7 @@ CREATE TABLE Applications (
     ApplicationDate DATE,
     Status VARCHAR(100),
     CoverLetter TEXT,
+    resume VARCHAR (255),
     FOREIGN KEY (JobID) REFERENCES Jobs(JobID),
     FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );

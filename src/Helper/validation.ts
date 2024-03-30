@@ -57,9 +57,9 @@ export const companyValidationSchema = joi.object({
 
 
 
-  import Joi from 'joi'; // Make sure you import Joi
+ 
 
-  const jsonArrayValidator = (value: string, helpers: Joi.CustomHelpers): string | Joi.ErrorReport => {
+  const jsonArrayValidator = (value: string, helpers: joi.CustomHelpers): string | joi.ErrorReport => {
       try {
           const arr = JSON.parse(value);
           if (!Array.isArray(arr)) {

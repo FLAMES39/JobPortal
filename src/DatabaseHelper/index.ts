@@ -2,6 +2,7 @@
 import { number } from "joi";
 import { sqlConfig } from "../Config";
 import mssql from 'mssql'
+import {  EducationHistory, EmploymentHistory, Skill } from "../Controllers/ApplicationController";
 
 
 export class DatabaseHelper{
@@ -37,12 +38,11 @@ export class DatabaseHelper{
      static async insertApplication(applicationData: {
 
         JobID: number,
+        UserID:number
         Name:string,
         Email:string,
         contactInfo:string,
-        ApplicationDate: string,
         Status: string,
-        CoverLetter: string,
         ResumePath: string | null,
         // Add other fields as necessary
     }) {
@@ -61,24 +61,39 @@ export class DatabaseHelper{
         return result.recordset[0].ApplicationID;
     }
     
-    static async insertEmploymentHistory(employmentData: any): Promise<void> {
+    static async insertEmploymentHistory(employmentData: EmploymentHistory): Promise<void> {
         const pool = await this.pool;
         const request = pool.request();
-        // Add input parameters to the request based on employmentData
-        // Execute the query or stored procedure to insert employment history
+
+        request.input('ApplicationID', mssql.Int, employmentData.ApplicationID);
+        request.input('CompanyName', mssql.VarChar, employmentData.companyName);
+        request.input('JobTitle', mssql.VarChar, employmentData.JobTitle);
+        request.input('Responsibilities', mssql.VarChar, employmentData.Responsibilities);
+        request.input('ReasonForLeaving', mssql.VarChar, employmentData.ReasonForLeaving);
+    
+
+        await request.execute('InsertEmploymentHistory'); 
     }
 
-    static async insertEducationHistory(educationData: any): Promise<void> {
+    static async insertEducationHistory(educationData: EducationHistory): Promise<void> {
         const pool = await this.pool;
         const request = pool.request();
-        // Add input parameters to the request based on educationData
-        // Execute the query or stored procedure to insert education history
+
+        request.input('ApplicationID', mssql.Int, educationData.ApplicationID);
+        request.input('Institution', mssql.VarChar, educationData.Institution);
+        request.input('Degree', mssql.VarChar, educationData.Degree);
+        request.input('FieldOfStudy', mssql.VarChar, educationData.FieldOfStudy);
+
+        await request.execute('InsertEducationHistory'); 
     }
 
-    static async insertSkill(skillData: any): Promise<void> {
+    static async insertSkill(skillData: Skill): Promise<void> {
         const pool = await this.pool;
         const request = pool.request();
-        // Add input parameters to the request based on skillData
-        // Execute the query or stored procedure to insert skill
+
+        request.input('ApplicationID', mssql.Int, skillData.ApplicationID);
+        request.input('Skill', mssql.VarChar, skillData.skill);
+
+        await request.execute('InsertSkill'); // Replace with your stored procedure name
     }
 }

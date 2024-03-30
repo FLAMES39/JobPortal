@@ -2,7 +2,6 @@
 import multer from 'multer';
 import path from 'path';
 import dotenv from 'dotenv'
-// import { Request } from 'express';
 import express, { Request, Response } from 'express'
 import { jobApplicationValidationSchema } from '../Helper/validation'
 import { DatabaseHelper } from '../DatabaseHelper'
@@ -15,9 +14,8 @@ interface iApplication{
     contactInfo:string
     JobID:number
     UserID:number
-    ApplicationDate:Date
     Status:"Applied" | "Not Applied"
-    CoverLetter:string
+    ResumePath:string
     employmentHistory:string
     educationHistory:string
     skills:string
@@ -37,20 +35,23 @@ export interface jobs{
 }
 
 export interface Skill {
+   ApplicationID:number
     skill: string;
     
 }
-export interface EducationHistoryItem {
-    institution: string;
-    degree: string;
-    fieldOfStudy: string;
+export interface EducationHistory {
+    ApplicationID:number
+    Institution: string;
+    Degree: string;
+    FieldOfStudy: string;
 
 }
-export interface EmploymentHistoryItem {
+export interface EmploymentHistory {
+    ApplicationID:number
     companyName: string;
-    jobTitle: string;
-    responsibilities: string;
-    reasonForLeaving?: string;
+    JobTitle: string;
+    Responsibilities: string;
+    ReasonForLeaving?: string;
     startDate?: string;
     endDate?: string;
 }
@@ -75,44 +76,62 @@ interface JobApplicationRequest extends Request {
   
   const insertRelatedData = async (
     applicationId: number,
-    employmentHistoryJson: string,
-    educationHistoryJson: string,
-    skillsJson: string
+    employmentHistory: [{}],
+    educationHistory: [{}],
+    skills: []
   ): Promise<void> => {
     try {
-      const employmentHistory: EmploymentHistoryItem[] = JSON.parse(employmentHistoryJson);
-      const educationHistory: EducationHistoryItem[] = JSON.parse(educationHistoryJson);
-      const skills: Skill[] = JSON.parse(skillsJson);
+      // const employmentHistory: EmploymentHistoryItem[] = JSON.parse(employmentHistory);
+      // const educationHistory: EducationHistoryItem[] = JSON.parse(educationHistory);
+      // const skills: Skill[] = JSON.parse(skillsJson);
   
       for (const employment of employmentHistory) {
-        await DatabaseHelper.insertEmploymentHistory({ ApplicationID: applicationId, ...employment });
+        await DatabaseHelper.insertEmploymentHistory({
+          ApplicationID: applicationId, ...employment,
+          companyName: '',
+          JobTitle: '',
+          Responsibilities: ''
+        });
       }
   
       for (const education of educationHistory) {
-        await DatabaseHelper.insertEducationHistory({ ApplicationID: applicationId, ...education });
+        await DatabaseHelper.insertEducationHistory({
+          ApplicationID: applicationId, ...education,
+          Institution: '',
+          Degree: '',
+          FieldOfStudy: ''
+        });
       }
   
-      for (const skill of skills) {
-        await DatabaseHelper.insertSkill({ ApplicationID: applicationId, Skill: skill.skill });
-      }
+      // for (const skill of skills) {
+      //   await DatabaseHelper.insertSkill({ ApplicationID: applicationId, Skill: skill  });
+      // }
     } catch (error) {
       console.error('Error inserting related data:', error);
       throw error; // Rethrow the error for handling in the calling function
     }
   };
-  
+
+
   export const applyJob = async (req: JobApplicationRequest, res: Response) => {
     try {
         const JobID = parseInt(req.params.JobID, 10);
-        const { error, value } = jobApplicationValidationSchema.validate(req.body);
-      if (error) {
-        return res.status(400).json({ message: error.details[0].message });
-      }
+        // console.log(typeof(JobID))  
+      //   const { error, value } = jobApplicationValidationSchema.validate(req.body);
+      // if (error) {
+      //   return res.status(400).json({ message: error.details[0].message });
+      // }
   
-      const { Name, Email, contactInfo, employmentHistory, educationHistory, skills, CoverLetter } = value;
+      const { Name, Email, contactInfo, employmentHistory, educationHistory, skills, UserID } = req.body;
+      console.log(skills);
+      
+
+
       const resumeFile = req.file;
-  
-      const ApplicationDate = new Date().toISOString().slice(0, 10);
+      
+      const userID = parseInt(UserID,10)
+
+      
       const Status = 'Applied';
   
       const jobExists = await DatabaseHelper.exec('GetJobByID', {JobID});
@@ -122,14 +141,15 @@ interface JobApplicationRequest extends Request {
   
       const applicationId = await DatabaseHelper.insertApplication({
         JobID,
+        UserID:userID,
         Name,
         Email,
         contactInfo,
-        ApplicationDate,
         Status,
-        CoverLetter,
-        ResumePath: resumeFile ? resumeFile.path : null,
+         ResumePath:`D://applications`
+        //ResumePath: resumeFile ? resumeFile.path : null,
       });
+      console.log('applicationId' , applicationId);
   
       await insertRelatedData(applicationId, employmentHistory, educationHistory, skills);
   

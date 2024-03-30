@@ -65,7 +65,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return rest;
         });
         const token = jsonwebtoken_1.default.sign(payload[0], process.env.SECRET_KEY, { expiresIn: "36000s" });
-        return res.status(201).json({ message: "Logged In Successfull", token, Name: payload[0].Name, role: payload[0].role });
+        return res.status(201).json({ message: "Logged In Successfull", token, Name: payload[0].Name, role: payload[0].role, UserID: payload[0].UserID });
     }
     catch (error) {
         return res.status(500).json(error.message);

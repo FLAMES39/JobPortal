@@ -8,12 +8,12 @@ import multer from "multer";
 
 
 const applicationRoute = Router();
-const upload = multer({ dest: 'uploads/' }); // Setup multer as needed
+const upload = multer({ dest: 'uploads/' }); 
 
 // applicationRoute.post('/:JobID',applyJob)
 applicationRoute.get('',getAllApplications)
 applicationRoute.delete('',withdrawApplication)
-applicationRoute.post('/applyJob/:JobID', upload.single('resume'), applyJob);
+applicationRoute.post('/apply/:JobID', upload.single('ResumePath'), applyJob);
 
 
 export default applicationRoute;

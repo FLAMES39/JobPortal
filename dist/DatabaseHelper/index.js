@@ -58,24 +58,32 @@ class DatabaseHelper {
         return __awaiter(this, void 0, void 0, function* () {
             const pool = yield this.pool;
             const request = pool.request();
-            // Add input parameters to the request based on employmentData
-            // Execute the query or stored procedure to insert employment history
+            request.input('ApplicationID', mssql_1.default.Int, employmentData.ApplicationID);
+            request.input('CompanyName', mssql_1.default.VarChar, employmentData.companyName);
+            request.input('JobTitle', mssql_1.default.VarChar, employmentData.JobTitle);
+            request.input('Responsibilities', mssql_1.default.VarChar, employmentData.Responsibilities);
+            request.input('ReasonForLeaving', mssql_1.default.VarChar, employmentData.ReasonForLeaving);
+            yield request.execute('InsertEmploymentHistory');
         });
     }
     static insertEducationHistory(educationData) {
         return __awaiter(this, void 0, void 0, function* () {
             const pool = yield this.pool;
             const request = pool.request();
-            // Add input parameters to the request based on educationData
-            // Execute the query or stored procedure to insert education history
+            request.input('ApplicationID', mssql_1.default.Int, educationData.ApplicationID);
+            request.input('Institution', mssql_1.default.VarChar, educationData.Institution);
+            request.input('Degree', mssql_1.default.VarChar, educationData.Degree);
+            request.input('FieldOfStudy', mssql_1.default.VarChar, educationData.FieldOfStudy);
+            yield request.execute('InsertEducationHistory');
         });
     }
     static insertSkill(skillData) {
         return __awaiter(this, void 0, void 0, function* () {
             const pool = yield this.pool;
             const request = pool.request();
-            // Add input parameters to the request based on skillData
-            // Execute the query or stored procedure to insert skill
+            request.input('ApplicationID', mssql_1.default.Int, skillData.ApplicationID);
+            request.input('Skill', mssql_1.default.VarChar, skillData.skill);
+            yield request.execute('InsertSkill'); // Replace with your stored procedure name
         });
     }
 }

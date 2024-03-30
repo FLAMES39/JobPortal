@@ -24,6 +24,9 @@ SERVER.use('/category',CategoryRoute);
 SERVER.use('/admin',adminRoute);
 SERVER.use('/apply',applicationRoute)
 
+
+
+
 SERVER.listen(PORT,()=>{
     console.log(`Database connected to: http://localhost${PORT}`);
     
