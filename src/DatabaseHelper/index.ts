@@ -2,7 +2,7 @@
 import { number } from "joi";
 import { sqlConfig } from "../Config";
 import mssql from 'mssql'
-import {  EducationHistory, EmploymentHistory, Skill } from "../Controllers/ApplicationController";
+import {  EducationHistory, EmploymentHistory, Skills } from "../Controllers/ApplicationController";
 
 
 export class DatabaseHelper{
@@ -42,6 +42,7 @@ export class DatabaseHelper{
         Name:string,
         Email:string,
         contactInfo:string,
+        JobTitle:string,
         Status: string,
         ResumePath: string | null,
         // Add other fields as necessary
@@ -66,7 +67,7 @@ export class DatabaseHelper{
         const request = pool.request();
 
         request.input('ApplicationID', mssql.Int, employmentData.ApplicationID);
-        request.input('CompanyName', mssql.VarChar, employmentData.companyName);
+        request.input('CompanyName', mssql.VarChar, employmentData.CompanyName);
         request.input('JobTitle', mssql.VarChar, employmentData.JobTitle);
         request.input('Responsibilities', mssql.VarChar, employmentData.Responsibilities);
         request.input('ReasonForLeaving', mssql.VarChar, employmentData.ReasonForLeaving);
@@ -87,13 +88,19 @@ export class DatabaseHelper{
         await request.execute('InsertEducationHistory'); 
     }
 
-    static async insertSkill(skillData: Skill): Promise<void> {
+    static async insertSkill(skillData: Skills): Promise<void> {
         const pool = await this.pool;
         const request = pool.request();
-
+    
         request.input('ApplicationID', mssql.Int, skillData.ApplicationID);
-        request.input('Skill', mssql.VarChar, skillData.skill);
-
-        await request.execute('InsertSkill'); // Replace with your stored procedure name
+        request.input('Skill', mssql.VarChar, skillData.skills); 
+    
+        try {
+            await request.execute('InsertSkill'); 
+        } catch (error) {
+            console.error('Error inserting skill:', error);
+            throw error; // Rethrow the error for further handling
+        }
     }
+    
 }

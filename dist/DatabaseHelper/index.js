@@ -59,7 +59,7 @@ class DatabaseHelper {
             const pool = yield this.pool;
             const request = pool.request();
             request.input('ApplicationID', mssql_1.default.Int, employmentData.ApplicationID);
-            request.input('CompanyName', mssql_1.default.VarChar, employmentData.companyName);
+            request.input('CompanyName', mssql_1.default.VarChar, employmentData.CompanyName);
             request.input('JobTitle', mssql_1.default.VarChar, employmentData.JobTitle);
             request.input('Responsibilities', mssql_1.default.VarChar, employmentData.Responsibilities);
             request.input('ReasonForLeaving', mssql_1.default.VarChar, employmentData.ReasonForLeaving);
@@ -82,8 +82,14 @@ class DatabaseHelper {
             const pool = yield this.pool;
             const request = pool.request();
             request.input('ApplicationID', mssql_1.default.Int, skillData.ApplicationID);
-            request.input('Skill', mssql_1.default.VarChar, skillData.skill);
-            yield request.execute('InsertSkill'); // Replace with your stored procedure name
+            request.input('Skill', mssql_1.default.VarChar, skillData.skills);
+            try {
+                yield request.execute('InsertSkill');
+            }
+            catch (error) {
+                console.error('Error inserting skill:', error);
+                throw error; // Rethrow the error for further handling
+            }
         });
     }
 }

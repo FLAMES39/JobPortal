@@ -1,7 +1,7 @@
 
 import path from 'path'
 import dotenv from 'dotenv'
-import { Request, Response } from 'express'
+import { Application, Request, Response } from 'express'
 import { companyValidationSchema } from '../Helper/validation'
 import { DatabaseHelper } from '../DatabaseHelper'
 import {v4 as uid} from 'uuid'
@@ -68,7 +68,7 @@ export const loginCompany  = async (req:Request, res:Response)=>{
             return rest
         })
         const  token = jwt.sign(payload[0],process.env.SECRET_KEY as string,{expiresIn:"36000"})
-        return res.status(201).json({message:"Logged Company Successful",token,role:payload[0].role,Name:payload[0].Name})
+        return res.status(201).json({message:"Logged Company Successful",token,role:payload[0].role,Name:payload[0].Name, CompanyID:payload[0].CompanyID})
     } catch (error:any) {
         return res.status(500).json(error.message)
     }
@@ -111,3 +111,13 @@ export const getAllCompanies = async (req:ExtendedRequest,res:Response)=>{
         return res.status(500).json({message:error.message})
     }
 }
+
+
+// export const getAllApplication = async (req:ExtendedRequest,res:Response)=>{
+//     try {
+//         let Application:Application[] = await (await DatabaseHelper.exec('getallApplications')).recordset
+//         return res.status(201).json(Application)
+//     } catch (error:any) {
+//         return res.status(500).json({message:error.message})
+//     }
+// }

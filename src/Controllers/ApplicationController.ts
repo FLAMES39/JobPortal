@@ -12,6 +12,7 @@ interface iApplication{
     Name:string
     Email:string
     contactInfo:string
+    JobTitle:string
     JobID:number
     UserID:number
     Status:"Applied" | "Not Applied"
@@ -34,9 +35,9 @@ export interface jobs{
     ExpiryDate:string
 }
 
-export interface Skill {
-   ApplicationID:number
-    skill: string;
+export interface Skills {
+    ApplicationID:Number
+    skills: string;
     
 }
 export interface EducationHistory {
@@ -48,12 +49,11 @@ export interface EducationHistory {
 }
 export interface EmploymentHistory {
     ApplicationID:number
-    companyName: string;
+    CompanyName: string;
     JobTitle: string;
     Responsibilities: string;
     ReasonForLeaving?: string;
-    startDate?: string;
-    endDate?: string;
+
 }
 interface ExtendedRequest extends Request{
     body:{
@@ -74,91 +74,90 @@ interface JobApplicationRequest extends Request {
   
 //   const upload = multer({ dest: 'uploads/' });
   
-  const insertRelatedData = async (
-    applicationId: number,
-    employmentHistory: [{}],
-    educationHistory: [{}],
-    skills: []
-  ): Promise<void> => {
-    try {
-      // const employmentHistory: EmploymentHistoryItem[] = JSON.parse(employmentHistory);
-      // const educationHistory: EducationHistoryItem[] = JSON.parse(educationHistory);
-      // const skills: Skill[] = JSON.parse(skillsJson);
-  
-      for (const employment of employmentHistory) {
-        await DatabaseHelper.insertEmploymentHistory({
-          ApplicationID: applicationId, ...employment,
-          companyName: '',
-          JobTitle: '',
-          Responsibilities: ''
-        });
-      }
-  
-      for (const education of educationHistory) {
-        await DatabaseHelper.insertEducationHistory({
-          ApplicationID: applicationId, ...education,
-          Institution: '',
-          Degree: '',
-          FieldOfStudy: ''
-        });
-      }
-  
-      // for (const skill of skills) {
-      //   await DatabaseHelper.insertSkill({ ApplicationID: applicationId, Skill: skill  });
-      // }
-    } catch (error) {
-      console.error('Error inserting related data:', error);
-      throw error; // Rethrow the error for handling in the calling function
+const insertRelatedData = async (
+  applicationId: number,
+  employmentHistory: EmploymentHistory[],
+  educationHistory: EducationHistory[],
+  skills: Skills[]
+): Promise<void> => {
+  for (const employment of employmentHistory) {
+    if (Object.values(employment).some(value => value === null )) {
+      console.warn('Skipping incomplete employment history record:', employment);
+      continue;
     }
-  };
+    await DatabaseHelper.insertEmploymentHistory({ ...employment, ApplicationID: applicationId });
+  }
 
-
-  export const applyJob = async (req: JobApplicationRequest, res: Response) => {
-    try {
-        const JobID = parseInt(req.params.JobID, 10);
-        // console.log(typeof(JobID))  
-      //   const { error, value } = jobApplicationValidationSchema.validate(req.body);
-      // if (error) {
-      //   return res.status(400).json({ message: error.details[0].message });
-      // }
-  
-      const { Name, Email, contactInfo, employmentHistory, educationHistory, skills, UserID } = req.body;
-      console.log(skills);
-      
-
-
-      const resumeFile = req.file;
-      
-      const userID = parseInt(UserID,10)
-
-      
-      const Status = 'Applied';
-  
-      const jobExists = await DatabaseHelper.exec('GetJobByID', {JobID});
-      if (!jobExists) {
-        return res.status(404).json({ message: 'Job not found' });
-      }
-  
-      const applicationId = await DatabaseHelper.insertApplication({
-        JobID,
-        UserID:userID,
-        Name,
-        Email,
-        contactInfo,
-        Status,
-         ResumePath:`D://applications`
-        //ResumePath: resumeFile ? resumeFile.path : null,
-      });
-      console.log('applicationId' , applicationId);
-  
-      await insertRelatedData(applicationId, employmentHistory, educationHistory, skills);
-  
-      res.status(201).json({ message: 'Successfully Applied' });
-    } catch (error) {
-      console.error('Apply Job Error:', error);
-      res.status(500).json({ message: 'An error occurred' });
+  for (const education of educationHistory) {
+    if (Object.values(education).some(value => value === null )) {
+      console.warn('Skipping incomplete education history record:', education);
+      continue;
     }
-  };
+    await DatabaseHelper.insertEducationHistory({ ...education, ApplicationID: applicationId });
+  }
+
+  for (const skill of skills) {
+    if (!skill.skills) {
+      console.warn('Skipping incomplete skill record:', skill); // Logs the entire skill object
+      continue;
+    }
+    await DatabaseHelper.insertSkill({ ApplicationID: applicationId, skills: skill.skills });
+  }
+  
+};
+
+
+
+
+export const applyJob = async (req: JobApplicationRequest, res: Response) => {
+  try {
+    const JobID = parseInt(req.params.JobID, 10);
+
+    // Parse JSON strings into objects if they are strings; otherwise, use them as they are
+    const employmentHistory = typeof req.body.employmentHistory === 'string' ?
+      JSON.parse(req.body.employmentHistory) : req.body.employmentHistory;
+
+    const educationHistory = typeof req.body.educationHistory === 'string' ?
+      JSON.parse(req.body.educationHistory) : req.body.educationHistory;
+
+    const skills = typeof req.body.skills === 'string' ?
+      JSON.parse(req.body.skills) : req.body.skills;
+
+    // Extract other properties from req.body without redeclaring employmentHistory, educationHistory, and skills
+    const { Name, Email, contactInfo, JobTitle, UserID } = req.body;
+
+    const resumeFile = req.file;
+    const userID = parseInt(UserID, 10);
+    const Status = 'Applied';
+
+    const jobExists = await DatabaseHelper.exec('GetJobByID', { JobID });
+    if (!jobExists) {
+      return res.status(404).json({ message: 'Job not found' });
+    }
+
+    const applicationId = await DatabaseHelper.insertApplication({
+      JobID,
+      UserID: userID,
+      Name,
+      Email,
+      contactInfo,
+      JobTitle,
+      Status: 'Applied',
+       // ResumePath:`D:// Application`
+       ResumePath: resumeFile ? resumeFile.path : null,
+    });
+    console.log('applicationId', applicationId);
+
+    await insertRelatedData(applicationId, employmentHistory, educationHistory, skills);
+    console.log(skills);
+
+    res.status(201).json({ message: 'Successfully Applied' });
+  } catch (error) {
+    console.error('Apply Job Error:', error);
+    res.status(500).json({ message: 'An error occurred' });
+  }
+};
+
 
 
 

@@ -13,3 +13,5 @@ BEGIN
     INSERT INTO EmploymentHistory (ApplicationID, CompanyName, JobTitle, Responsibilities, ReasonForLeaving)
     VALUES (@ApplicationID, @CompanyName, @JobTitle, @Responsibilities, @ReasonForLeaving);
 END;
+
+

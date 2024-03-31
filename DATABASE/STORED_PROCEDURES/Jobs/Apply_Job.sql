@@ -9,11 +9,12 @@ CREATE OR ALTER PROCEDURE insertApplication
     @Name VARCHAR(255),
     @Email VARCHAR(255),
     @ContactInfo VARCHAR(255),
+    @JobTitle VARCHAR (255),
     @Status VARCHAR(100)
 AS
 BEGIN
-    INSERT INTO Applications (JobID,  UserID, ResumePath, Name, Email, ContactInfo, Status)
-    VALUES (@JobID, @UserID, @ResumePath, @Name, @Email, @ContactInfo, @Status)
+    INSERT INTO Applications (JobID,  UserID, ResumePath, Name, Email, ContactInfo,JobTitle, Status)
+    VALUES (@JobID, @UserID, @ResumePath, @Name, @Email, @ContactInfo,@JobTitle, @Status)
     
     -- Return the ID of the newly inserted application
     SELECT SCOPE_IDENTITY() AS ApplicationID;

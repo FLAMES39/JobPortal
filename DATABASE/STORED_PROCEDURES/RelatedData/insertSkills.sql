@@ -2,11 +2,11 @@ USE JobPortal
 GO
 
 
-CREATE PROCEDURE InsertSkill
+CREATE OR ALTER PROCEDURE InsertSkill
     @ApplicationID INT,
-    @Skill NVARCHAR(255)
+    @Skills VARCHAR(255)
 AS
 BEGIN
-    INSERT INTO Skills (ApplicationID, Skill)
-    VALUES (@ApplicationID, @Skill);
+    INSERT INTO Skills (ApplicationID, Skills)
+    VALUES (@ApplicationID, @Skills);
 END;
