@@ -10,16 +10,13 @@ export class DatabaseHelper{
     private static pool:Promise<mssql.ConnectionPool>=mssql.connect(sqlConfig)
 
 
-    private static addInputToRequest(request: mssql.Request, data: { [x: string]: string | number | null } = {}) {
-        const keys = Object.keys(data);
-        keys.forEach(KeyName => {
-            const value = data[KeyName];
-            // Check if the value is null before adding it to the request
-            if (value !== null) {
-                request.input(KeyName, value);
-            }
-        });
-        return request;
+ 
+    private static addInputToRequest(request:mssql.Request, data:{[x:string]:string|number}){
+        const keys  =  Object.keys(data)
+        keys.map(keyName=>{
+            return request.input(keyName,data[keyName])
+        })
+        return request 
     }
     
 

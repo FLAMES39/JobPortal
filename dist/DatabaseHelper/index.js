@@ -16,14 +16,10 @@ exports.DatabaseHelper = void 0;
 const Config_1 = require("../Config");
 const mssql_1 = __importDefault(require("mssql"));
 class DatabaseHelper {
-    static addInputToRequest(request, data = {}) {
+    static addInputToRequest(request, data) {
         const keys = Object.keys(data);
-        keys.forEach(KeyName => {
-            const value = data[KeyName];
-            // Check if the value is null before adding it to the request
-            if (value !== null) {
-                request.input(KeyName, value);
-            }
+        keys.map(keyName => {
+            return request.input(keyName, data[keyName]);
         });
         return request;
     }

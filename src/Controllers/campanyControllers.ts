@@ -38,21 +38,21 @@ interface ExtendedRequest extends Request{
 export const addCompany = async (req:ExtendedRequest, res:Response)=>{
     try {
         let CompanyID = uid()
-        const {Name,Description,Industry,Logo,ContactInfo,Email,Password} = req.body
+        const {Name,Description,Industry,ContactInfo,Email,Password} = req.body
         
         const {error }= companyValidationSchema.validate(req.body)
         if(error){
             return res.status(404).json(error.details[0].message)
         }
         let hashedPassword = await bcrypt.hash(Password,7)
-        await DatabaseHelper.exec('AddNewCompany',{Name,Description,Industry,Logo,ContactInfo,Email,Password:hashedPassword})
+        await DatabaseHelper.exec('AddNewCompany',{Name,Description,Industry,ContactInfo,Email,Password:hashedPassword})
         return res.status(201).json({message:"Compony Added Successfully!!"})
     } catch (error:any) {
         return res.status(500).json(error.message)
     }
 }
 
-export const loginCompany  = async (req:Request, res:Response)=>{
+export const   loginCompany  = async (req:Request, res:Response)=>{
     try {
         const {Email, Password} = req.body
         let company = await(await DatabaseHelper.query(`SELECT * FROM companies WHERE Email='${Email}'`)).recordset

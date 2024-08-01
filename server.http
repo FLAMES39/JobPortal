@@ -37,6 +37,12 @@ Content-Type: application/json
 
 
 ###
+
+get http://localhost:4000/jobs/search?term=typescript
+
+
+
+###
 get http://localhost:4000/user
 
 
@@ -100,7 +106,7 @@ get http://localhost:4000/jobs
 
 
 ###
-get http://localhost:4000/jobs/Categories/1
+get http://localhost:4000/jobs/2024
 
 
 
@@ -164,10 +170,17 @@ get http://localhost:4000/admin
 
 
 ###
+get http://localhost:4000/jobs/search?term=typescript
+
+
+###
 get http://localhost:4000/admin/companies
+
 
 ###
 get http://localhost:4000/companies/applications
+
+
 
 ###
 DELETE http://localhost:4000/admin/delete/1
@@ -176,8 +189,15 @@ DELETE http://localhost:4000/admin/delete/1
 ###
 DELETE http://localhost:4000/admin/1
 
+
+
 ###
-DELETE http://localhost:4000/admin/company/1
+DELETE http://localhost:4000/admin/delete/delete/job/1007
+
+
+###
+DELETE http://localhost:4000/jobs/1017
+
 
 
 ###

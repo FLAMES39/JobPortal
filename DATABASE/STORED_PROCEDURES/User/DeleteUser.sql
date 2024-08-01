@@ -8,5 +8,5 @@ CREATE OR ALTER PROCEDURE DeleteUser (
 )
 AS
 BEGIN
-    DELETE FROM Applications WHERE UserID = @UserID;
+    DELETE FROM Users WHERE UserID = @UserID;
 END;

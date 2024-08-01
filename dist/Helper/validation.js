@@ -25,7 +25,7 @@ exports.companyValidationSchema = joi_1.default.object({
     Name: joi_1.default.string().required().min(2).max(100),
     Description: joi_1.default.string().required().min(5).max(500),
     Industry: joi_1.default.string().required().min(2).max(50),
-    Logo: joi_1.default.string().uri().optional(),
+    // Logo: joi.string().optional(),
     ContactInfo: joi_1.default.string().required().min(2).max(500),
     Email: joi_1.default.string().required(),
     Password: joi_1.default.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required()

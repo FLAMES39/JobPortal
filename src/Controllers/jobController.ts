@@ -68,7 +68,7 @@ export const postJob = async (req:ExtendedRequest, res:Response)=>{
 
 export const getAllJobs= async (req:ExtendedRequest, res: Response)=>{
     try {
-        let jobs: ijobs[]= await (await DatabaseHelper.exec('sp_getAllJobs')).recordset
+        let jobs: ijobs[]= (await DatabaseHelper.exec('sp_getAllJobs')).recordset
       return   res.status(201).json(jobs)
     } catch (error:any) {
         return res.status(500).json(error.message)
@@ -156,3 +156,25 @@ export const addJobCategories = async (req:Request, res:Response)=>{
         return res.status(500).json(error.message)
     }
 }
+
+
+export const searchJobs = async (req: Request, res: Response): Promise<void> => {
+    const searchJob = req.query.term as string;
+    console.log(`Received search term: ${searchJob}, Type: ${typeof searchJob}`);
+    
+  
+    try {
+      const result = await DatabaseHelper.exec('SearchJobs', { searchJob});
+      console.log(result);
+      
+  
+      // Assuming the stored procedure returns a result set
+      const jobs = result.recordset;
+  
+      res.json(jobs);
+    } catch (error) {
+      console.error('Error searching jobs:', error);
+      res.status(500).json({ message: 'Error searching Jobs' });
+    }
+  };
+  
